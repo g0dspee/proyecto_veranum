@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Órdenes de Restaurante para la Reserva {{ reservation.id }}</h1>
+
+<form method="POST" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Crear Orden</button>
+</form>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Proveedor</th>
+            <th>Fecha de Entrega</th>
+            <th>Monto Total</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.provider.name }}</td>
+            <td>{{ order.delivery_date }}</td>
+            <td>${{ order.total_amount }}</td>
+            <td>{{ order.get_status_display }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No hay órdenes de restaurante para esta reserva.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

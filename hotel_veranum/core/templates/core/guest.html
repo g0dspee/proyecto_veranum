@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Administrar Huéspedes</title>
+</head>
+<body>
+    <h1>Administrar Huéspedes</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar</button>
+    </form>
+    <p>{{ mesg }}</p>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Hotel</th>
+            <th>Acciones</th>
+        </tr>
+        {% for guest in list %}
+        <tr>
+            <td>{{ guest.guest_id }}</td>
+            <td>{{ guest.first_name }}</td>
+            <td>{{ guest.last_name }}</td>
+            <td>{{ guest.email }}</td>
+            <td>{{ guest.phone_number }}</td>
+            <td>{{ guest.hotel }}</td>
+            <td>
+                <a href="{% url 'guest' hotel_id=hotel.id action='upd' guest_id=guest.guest_id %}">Editar</a>
+                <a href="{% url 'guest' hotel_id=hotel.id action='del' guest_id=guest.guest_id %}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

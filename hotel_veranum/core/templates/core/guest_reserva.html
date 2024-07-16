@@ -1,0 +1,72 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Huéspedes en {{ hotel.name }}</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for guest in guests %}
+        <tr id="guest-{{ guest.guest_id }}">
+            <td>{{ guest.guest_id }}</td>
+            <td>{{ guest.first_name }}</td>
+            <td>{{ guest.last_name }}</td>
+            <td>{{ guest.email }}</td>
+            <td>{{ guest.phone_number }}</td>
+            <td>
+                <a href="{% url 'guest' action='upd' guest_id=guest.guest_id hotel_id=hotel.hotel_id %}" class="btn btn-warning btn-sm">Editar</a>
+                <button class="btn btn-danger btn-sm" onclick="confirmDeleteGuest('{{ guest.guest_id }}', '{{ hotel.hotel_id }}')">Eliminar</button>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No hay huéspedes en este hotel.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div id="confirmation-message" class="alert alert-success" style="display: none;"></div>
+
+<script>
+    function confirmDeleteGuest(guestId, hotelId) {
+        if (confirm('¿Estás seguro de que deseas eliminar este huésped?')) {
+            fetch(`{% url 'guest' action='del' guest_id=0 hotel_id=0 %}`.replace('0', guestId).replace('0', hotelId), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})  // Cuerpo vacío para una solicitud POST simple
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Elimina la fila del huésped
+                    document.getElementById(`guest-${guestId}`).remove();
+                    // Muestra el mensaje de confirmación
+                    const confirmationMessage = document.getElementById('confirmation-message');
+                    confirmationMessage.textContent = data.mesg;
+                    confirmationMessage.classList.remove('alert-danger');
+                    confirmationMessage.classList.add('alert-success');
+                    confirmationMessage.style.display = 'block';
+                } else {
+                    alert(data.mesg);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+</script>
+
+{% endblock %}

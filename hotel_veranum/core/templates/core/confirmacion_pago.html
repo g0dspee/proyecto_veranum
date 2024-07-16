@@ -1,0 +1,7 @@
+<!-- templates/confirmacion_pago.html -->
+<h1>Confirmación de Pago</h1>
+<form action="{% url 'confirmacion_pago' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="token_ws" value="{{ token_ws }}">
+    <button type="submit">Confirmar</button>
+</form>

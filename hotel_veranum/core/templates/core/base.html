@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VERANUM{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+    {% block extra_head %}
+    <!-- Puedes agregar CSS/JS adicionales aquí -->
+    {% endblock extra_head %}
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Inicio</a></li>
+                <li><a href="{% url 'guest_reserva' hotel_id=1 %}">Reservas</a></li>
+                <li><a href="{% url 'guest_form' %}">Ingresar Huésped</a></li>
+                <!-- Añade otros enlaces de navegación según sea necesario -->
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        {% block content %}
+        <!-- El contenido específico de cada página se insertará aquí -->
+        {% endblock content %}
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Veranum. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="{% static 'core/js/main.js' %}"></script>
+    {% block extra_script %}
+    <!-- Puedes agregar JS adicionales aquí -->
+    {% endblock extra_script %}
+</body>
+</html>

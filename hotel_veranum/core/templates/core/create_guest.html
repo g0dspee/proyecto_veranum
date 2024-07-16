@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>{% if guest_id %}Editar{% else %}Agregar{% endif %} Huésped</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="{% url 'guest_reserva' hotel_id=hotel_id %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

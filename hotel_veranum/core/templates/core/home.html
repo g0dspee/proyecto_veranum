@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Hotel</title>
+    <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Bienvenido a la Gestión de Hotel Veranum</h1>
+    </header>
+    <div class="container">
+        <p>Esta es la página de inicio para trabajadores. Selecciona un hotel para ver los huéspedes o administra los huéspedes.</p>
+        <div class="hotel-list">
+            <h2>Hoteles</h2>
+            {% for hotel in hotels %}
+                <a href="{% url 'guest_reserva' hotel.hotel_id %}">Ver huéspedes en {{ hotel.name }}</a>
+            {% endfor %}
+        </div>
+        <div class="guest-links">
+            <h2>Administrar Huéspedes</h2>
+            <a href="{% url 'guest_datos' guest_id=1 %}">Ver datos de huéspedes</a>
+            <a href="{% url 'guest_form' %}">Ingresar Huésped</a>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2024 Gestión de Hotel. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
