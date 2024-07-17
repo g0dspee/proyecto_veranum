@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from .models import Hotel, Room, Guest, Reservation, AdditionalService, Service, RestaurantOrder, InventoryItem, Provider
-from .forms import GuestForm, AdditionalServiceForm, RestaurantOrderForm, ReportForm, InventoryItemForm, ProviderForm
+from .models import Hotel, Room, Guest, Reservation, AdditionalService, Service, RestaurantOrder, InventoryItem, Provider, Activity
+from .forms import GuestForm, AdditionalServiceForm, RestaurantOrderForm, ReportForm, InventoryItemForm, ProviderForm, ActivityForm
 from django.http import JsonResponse
 from django.http import HttpResponse
 from .transbank_config import get_transaction
@@ -89,8 +89,19 @@ def guest(request, action, guest_id, hotel_id):
 
     return render(request, "core/guest.html", data)
 
-#Vistas para servicios adicionales y restaurant ############################################################
 
+##### Reservas
+
+def reservation_detail(request, reservation_id):
+    reservation = get_object_or_404(Reservation, id=reservation_id)
+    total_price = reservation.calculate_total_price()
+    return render(request, 'reservation_detail.html', {'reservation': reservation, 'total_price': total_price})
+
+def reservation_list(request):
+    reservations = Reservation.objects.all()
+    return render(request, 'reservation_list.html', {'reservations': reservations})
+
+#Vistas para servicios adicionales y restaurant ############################################################
 
 def additional_services(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id)
@@ -317,8 +328,47 @@ def generate_report(request, report_type):
 
     return response
 
-############################################################################################################################################################
+###### Actividades ####################################################################################################################################################
 
+
+
+def activity_list(request):
+    activities = Activity.objects.all()
+    return render(request, 'core/activity_list.html', {'activities': activities})
+
+def activity_create(request):
+    if request.method == 'POST':
+        form = ActivityForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('activity_list')
+    else:
+        form = ActivityForm()
+    return render(request, 'core/activity_form.html', {'form': form})
+
+def activity_update(request, activity_id):
+    activity = get_object_or_404(Activity, id=activity_id)
+    if request.method == 'POST':
+        form = ActivityForm(request.POST, instance=activity)
+        if form.is_valid():
+            form.save()
+            return redirect('activity_list')
+    else:
+        form = ActivityForm(instance=activity)
+    return render(request, 'core/activity_form.html', {'form': form})
+
+def activity_delete(request, activity_id):
+    activity = get_object_or_404(Activity, id=activity_id)
+    if request.method == 'POST':
+        activity.delete()
+        return redirect('activity_list')
+    return render(request, 'core/activity_confirm_delete.html', {'activity': activity})
+
+
+
+
+
+############################################################################################################
 def poblar_bd(request):
     Guest.objects.all().delete()
     Guest.objects.create(guest_id="G1", first_name='Jane',      last_name="Doe",            email="janedoe@converge.com",       phone_number="+56910001000")

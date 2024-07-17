@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Room, Guest, Reservation, Hotel, Service, AdditionalService, RestaurantOrder, Provider, InventoryItem
+from .models import Room, Guest, Reservation, Hotel, Service, AdditionalService, RestaurantOrder, Provider, InventoryItem, Activity
+from .forms import ActivityForm
 
 class RoomInline(admin.TabularInline):
     model = Room
@@ -68,3 +69,11 @@ class InventoryItemAdmin(admin.ModelAdmin):
 admin.site.register(RestaurantOrder, RestaurantOrderAdmin)
 admin.site.register(InventoryItem, InventoryItemAdmin)
 admin.site.register(Provider, ProviderAdmin)
+
+class ActivityAdmin(admin.ModelAdmin):
+    form = ActivityForm
+    list_display = ['hotel', 'date', 'time', 'activity_type', 'details']
+    list_filter = ['hotel', 'activity_type', 'date']
+    search_fields = ['hotel__name', 'details']
+
+admin.site.register(Activity, ActivityAdmin)

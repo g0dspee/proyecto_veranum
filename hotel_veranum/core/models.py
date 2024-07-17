@@ -38,7 +38,16 @@ class Reservation(models.Model):
     check_out = models.DateField()
 
     def __str__(self):
-        return f"Reservation for {self.guest} in {self.room}"
+        return f"Reserva para {self.guest} en {self.room}"
+    
+    def total_days(self):
+        return (self.check_out - self.check_in).days
+
+    def calculate_total_price(self):
+        total_price = self.room.price * self.total_days()
+        additional_services_cost = sum(service.service.price * service.quantity for service in self.additionalservice_set.all())
+        total_price += additional_services_cost * self.total_days()
+        return total_price
     
 ###########################################################################################################
 
@@ -63,7 +72,7 @@ class AdditionalService(models.Model):
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f"{self.service.name} for Reservation {self.reservation.id}"
+        return f"{self.service.name} para Reserva {self.reservation.id}"
     
 ############################################################################################################
 
@@ -94,5 +103,22 @@ class InventoryItem(models.Model):
     def __str__(self):
         return self.name    
 
-############################################################################################################
+#### Actividades ########################################################################################################
 
+class Activity(models.Model):
+    ACTIVITY_TYPES = [
+        ('social', 'Social'),
+        ('corporate', 'Corporativo'),
+        ('gastronomic', 'Gastronomico'),
+        ('cultural', 'Cultural'),
+        ('thematic', 'Temático'),
+    ]
+
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    date = models.DateField()
+    time = models.TimeField()
+    activity_type = models.CharField(max_length=20, choices=ACTIVITY_TYPES)
+    details = models.TextField()
+
+    def __str__(self):
+        return f"{self.activity_type} En {self.hotel.name} el {self.date} a las {self.time}"

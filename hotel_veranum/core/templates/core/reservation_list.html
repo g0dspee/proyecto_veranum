@@ -1,0 +1,34 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>Lista de Reservas</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Reserva ID</th>
+            <th>Hotel</th>
+            <th>Habitación</th>
+            <th>Huésped</th>
+            <th>Fecha de Entrada</th>
+            <th>Fecha de Salida</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reservation in reservations %}
+        <tr>
+            <td>{{ reservation.id }}</td>
+            <td>{{ reservation.hotel.name }}</td>
+            <td>{{ reservation.room.room_number }}</td>
+            <td>{{ reservation.guest.first_name }} {{ reservation.guest.last_name }}</td>
+            <td>{{ reservation.check_in }}</td>
+            <td>{{ reservation.check_out }}</td>
+            <td>
+                <a href="{% url 'reservation_detail' reservation.id %}" class="btn btn-info btn-sm">Ver Detalles</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

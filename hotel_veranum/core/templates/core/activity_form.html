@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>{% if form.instance.id %}Editar Actividad{% else %}Crear Nueva Actividad{% endif %}</h1>
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">
+        {% if form.instance.id %}Actualizar Actividad{% else %}Crear Actividad{% endif %}
+    </button>
+</form>
+
+<a href="{% url 'activity_list' %}" class="btn btn-secondary mt-3">Volver a la lista de actividades</a>
+{% endblock %}

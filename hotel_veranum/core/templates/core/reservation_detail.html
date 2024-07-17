@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>Detalles de la Reserva</h1>
+
+<p>Habitación: {{ reservation.room }}</p>
+<p>Fecha de entrada: {{ reservation.check_in }}</p>
+<p>Fecha de salida: {{ reservation.check_out }}</p>
+<p>Días totales: {{ reservation.total_days }}</p>
+
+<h2>Servicios Adicionales</h2>
+<ul>
+    {% for service in reservation.additionalservice_set.all %}
+    <li>{{ service.service.name }}: ${{ service.service.price }} x {{ service.quantity }}</li>
+    {% endfor %}
+</ul>
+
+<h2>Total</h2>
+<p>Valor base de la habitación: ${{ reservation.room.price }} por noche</p>
+<p>Servicios adicionales: ${{ reservation.additionalservice_set.aggregate(total=Sum('service__price')) }}</p>
+<p>Valor total de la habitación: ${{ total_price }}</p>
+{% endblock %}

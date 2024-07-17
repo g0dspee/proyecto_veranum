@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm, fields
-from .models import Guest, Hotel, AdditionalService, RestaurantOrder, InventoryItem, Provider
+from .models import Guest, Hotel, AdditionalService, RestaurantOrder, InventoryItem, Provider, Activity
 
 class GuestForm(forms.ModelForm):
     class Meta:
@@ -76,4 +76,22 @@ class ProviderForm(forms.ModelForm):
         labels = {
             'name': 'Nombre del Proveedor',
             'contact_info': 'Información de Contacto',
+        }
+
+class ActivityForm(forms.ModelForm):
+    class Meta:
+        model = Activity
+        fields = ['hotel', 'date', 'time', 'activity_type', 'details']
+        labels = {
+            'hotel': 'Hotel',
+            'date': 'Fecha',
+            'time': 'Hora',
+            'activity_type': 'Tipo de Actividad',
+            'details': 'Detalle de la Actividad',
+        }
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+            'time': forms.TimeInput(attrs={'type': 'time'}),
+            'activity_type': forms.Select(choices=Activity.ACTIVITY_TYPES),
+            'details': forms.Textarea(attrs={'rows': 4}),
         }
