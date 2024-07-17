@@ -21,8 +21,18 @@
         </div>
         <div class="guest-links">
             <h2>Administrar Huéspedes</h2>
-            <a href="{% url 'guest_datos' guest_id=1 %}">Ver datos de huéspedes</a>
+            <a href="{% url 'all_guests' %}">Ver todos los huéspedes</a>
             <a href="{% url 'guest_form' %}">Ingresar Huésped</a>
+        </div>
+        <div class="report-link">
+            <h2>Generar Reportes</h2>
+            <a href="{% url 'report_selection' %}" class="btn btn-primary">Ir a Generación de Reportes</a>
+        </div>
+        <div class="admin-links">
+            <h2>Administrar Restaurant</h2>
+            <a href="{% url 'restaurant_order_list' %}" class="btn btn-secondary mb-3">Ver Órdenes de Restaurant</a>
+            <a href="{% url 'inventory_item_list' %}" class="btn btn-secondary mb-3">Ver Inventario</a>
+            <a href="{% url 'provider_list' %}" class="btn btn-secondary mb-3">Ver Proveedores</a>
         </div>
     </div>
     <footer class="footer">

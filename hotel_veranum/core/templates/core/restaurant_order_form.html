@@ -1,0 +1,11 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>{% if form.instance.pk %}Actualizar{% else %}Crear{% endif %} Orden de Restaurante</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+<a href="{% url 'restaurant_order_list' reservation_id=reservation.id %}" class="btn btn-secondary mt-3">Volver a la lista de órdenes</a>
+{% endblock %}

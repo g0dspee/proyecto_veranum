@@ -40,6 +40,8 @@ class Reservation(models.Model):
     def __str__(self):
         return f"Reservation for {self.guest} in {self.room}"
     
+###########################################################################################################
+
 class Service(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
@@ -63,6 +65,8 @@ class AdditionalService(models.Model):
     def __str__(self):
         return f"{self.service.name} for Reservation {self.reservation.id}"
     
+############################################################################################################
+
 class Provider(models.Model):
     name = models.CharField(max_length=100)
     contact_info = models.TextField()
@@ -80,4 +84,15 @@ class RestaurantOrder(models.Model):
 
     def __str__(self):
         return f"Order for Reservation {self.reservation.id} from {self.provider.name}"
+    
+class InventoryItem(models.Model):
+    name = models.CharField(max_length=100)
+    quantity = models.PositiveIntegerField()
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name    
+
+############################################################################################################
 

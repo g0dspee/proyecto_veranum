@@ -1,0 +1,11 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>Confirmar Eliminación</h1>
+<form method="post">
+    {% csrf_token %}
+    <p>¿Estás seguro de que deseas eliminar esta orden de restaurante?</p>
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a href="{% url 'restaurant_order' reservation_id=order.reservation.id %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

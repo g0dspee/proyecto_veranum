@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>{% if provider %}Editar Proveedor{% else %}Crear Nuevo Proveedor{% endif %}</h1>
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">
+        {% if provider %}Actualizar Proveedor{% else %}Crear Proveedor{% endif %}
+    </button>
+</form>
+
+<a href="{% url 'provider_list' %}" class="btn btn-secondary mt-3">Volver a la lista de proveedores</a>
+{% endblock %}

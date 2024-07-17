@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Room, Guest, Reservation, Hotel, Service, AdditionalService, RestaurantOrder, Provider
+from .models import Room, Guest, Reservation, Hotel, Service, AdditionalService, RestaurantOrder, Provider, InventoryItem
 
 class RoomInline(admin.TabularInline):
     model = Room
@@ -50,17 +50,21 @@ class AdditionalServiceAdmin(admin.ModelAdmin):
     search_fields = ('reservation__id', 'service__name')
     raw_id_fields = ('reservation', 'service')
 
-# Registering RestaurantOrder model
-@admin.register(RestaurantOrder)
+# Registering Provider model
+class ProviderAdmin(admin.ModelAdmin):
+    list_display = ('name', 'contact_info')
+    search_fields = ('name', 'contact_info')
+
 class RestaurantOrderAdmin(admin.ModelAdmin):
     list_display = ('reservation', 'provider', 'order_date', 'delivery_date', 'total_amount', 'status')
     list_filter = ('status', 'provider')
     search_fields = ('reservation__id', 'provider__name')
-    raw_id_fields = ('reservation', 'provider')
-    date_hierarchy = 'order_date'
+    ordering = ('-order_date',)
 
-# Registering Provider model
-@admin.register(Provider)
-class ProviderAdmin(admin.ModelAdmin):
-    list_display = ('name', 'contact_info')
-    search_fields = ('name', 'contact_info')
+class InventoryItemAdmin(admin.ModelAdmin):
+    list_display = ('name', 'quantity', 'unit_price', 'provider')
+    search_fields = ('name', 'provider__name')
+
+admin.site.register(RestaurantOrder, RestaurantOrderAdmin)
+admin.site.register(InventoryItem, InventoryItemAdmin)
+admin.site.register(Provider, ProviderAdmin)

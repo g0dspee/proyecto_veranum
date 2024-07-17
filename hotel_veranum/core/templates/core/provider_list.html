@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>Proveedores del Restaurant</h1>
+
+<a href="{% url 'provider_create' %}" class="btn btn-primary mb-3">Agregar Nuevo Proveedor</a>
+<a href="{% url 'restaurant_order_list' %}" class="btn btn-secondary mb-3">Ver Órdenes de Restaurant</a>
+<a href="{% url 'inventory_item_list' %}" class="btn btn-secondary mb-3">Ver Inventario</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Información de Contacto</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for provider in providers %}
+        <tr>
+            <td>{{ provider.name }}</td>
+            <td>{{ provider.contact_info }}</td>
+            <td>
+                <a href="{% url 'provider_update' pk=provider.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'provider_delete' pk=provider.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No hay proveedores.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'home' %}" class="btn btn-secondary mt-3">Volver a la Página Principal</a>
+{% endblock %}

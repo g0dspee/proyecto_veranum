@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>Inventario del Restaurant</h1>
+
+<a href="{% url 'inventory_item_create' %}" class="btn btn-primary mb-3">Agregar Nuevo Ítem</a>
+<a href="{% url 'restaurant_order_list' %}" class="btn btn-secondary mb-3">Ver Órdenes de Restaurant</a>
+<a href="{% url 'provider_list' %}" class="btn btn-secondary mb-3">Ver Proveedores</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>Precio por Unidad</th>
+            <th>Proveedor</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.unit_price }}</td>
+            <td>{{ item.provider.name }}</td>
+            <td>
+                <a href="{% url 'inventory_item_update' pk=item.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'inventory_item_delete' pk=item.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No hay ítems en el inventario.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'home' %}" class="btn btn-secondary mt-3">Volver a la Página Principal</a>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>{% if order %}Actualizar Orden de Restaurante{% else %}Crear Nueva Orden de Restaurante{% endif %}</h1>
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">
+        {% if order %}Actualizar Orden{% else %}Crear Orden{% endif %}
+    </button>
+</form>
+
+<a href="{% url 'restaurant_order' reservation_id=reservation.id %}" class="btn btn-secondary mt-3">Volver a la lista de órdenes</a>
+{% endblock %}

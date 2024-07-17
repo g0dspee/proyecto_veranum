@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>Órdenes de Restaurante</h1>
+
+<a href="{% url 'create_restaurant_order' %}" class="btn btn-primary mb-3">Crear Nueva Orden</a>
+<a href="{% url 'inventory_item_list' %}" class="btn btn-secondary mb-3">Ver Inventario</a>
+<a href="{% url 'provider_list' %}" class="btn btn-secondary mb-3">Ver Proveedores</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Reserva</th>
+            <th>Proveedor</th>
+            <th>Fecha de Entrega</th>
+            <th>Monto Total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.reservation.id }}</td>
+            <td>{{ order.provider.name }}</td>
+            <td>{{ order.delivery_date }}</td>
+            <td>${{ order.total_amount }}</td>
+            <td>{{ order.get_status_display }}</td>
+            <td>
+                <a href="{% url 'restaurant_order_update' pk=order.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'restaurant_order_delete' pk=order.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">No hay órdenes de restaurante.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'home' %}" class="btn btn-secondary mt-3">Volver a la Página Principal</a>
+{% endblock %}
