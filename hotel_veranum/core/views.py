@@ -4,9 +4,6 @@ from .forms import GuestForm, AdditionalServiceForm, RestaurantOrderForm, Report
 from django.http import JsonResponse
 from django.http import HttpResponse
 from .transbank_config import get_transaction
-from transbank.webpay.webpay_plus.transaction import Transaction
-from transbank.webpay.webpay_plus.transaction import WebpayOptions
-from transbank.common.integration_type import IntegrationType
 import uuid
 import csv
 
